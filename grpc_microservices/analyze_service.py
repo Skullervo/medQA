@@ -14,30 +14,30 @@ import os
 import requests
 
 # 🔹 Orthanc ja Fetch Service osoitteet
-# ORTHANC_URL = os.getenv("ORTHANC_URL", "http://localhost:8042")
-ORTHANC_URL = os.getenv("ORTHANC_URL", "http://host.docker.internal:8042")
+ORTHANC_URL = os.getenv("ORTHANC_URL", "http://localhost:8042")
+#ORTHANC_URL = os.getenv("ORTHANC_URL", "http://host.docker.internal:8042")
 
-# FETCH_SERVICE_ADDRESS = "localhost:50051"
+FETCH_SERVICE_ADDRESS = "localhost:50051"
 # 🔹 Fetch Service osoite (ennen localhost, nyt käytetään kontin nimeä)
-FETCH_SERVICE_ADDRESS = os.getenv("FETCH_SERVICE_HOST", "fetch-service:50051")  
+#FETCH_SERVICE_ADDRESS = os.getenv("FETCH_SERVICE_HOST", "fetch-service:50051")  
 
 
 # 🔹 Tietokanta-asetukset
-# DB_CONFIG = {
-#     "dbname": os.getenv("DATABASE_NAME", "QA-results"),
-#     "user": os.getenv("DATABASE_USER", "postgres"),
-#     "password": os.getenv("DATABASE_PASSWORD", "pohde24"),
-#     "host": os.getenv("DATABASE_HOST", "localhost"),
-#     "port": os.getenv("DATABASE_PORT", "5432"),
-# }
-
 DB_CONFIG = {
     "dbname": os.getenv("DATABASE_NAME", "QA-results"),
     "user": os.getenv("DATABASE_USER", "postgres"),
     "password": os.getenv("DATABASE_PASSWORD", "pohde24"),
-    "host": os.getenv("DATABASE_HOST", "postgres-db"),  # TÄRKEÄ MUUTOS! Ennen "localhost"
-    "port": os.getenv("DATABASE_PORT", "5432"),  # Käyttää kontin sisäistä porttia
+    "host": os.getenv("DATABASE_HOST", "localhost"),
+    "port": os.getenv("DATABASE_PORT", "5432"),
 }
+
+# DB_CONFIG = {
+#     "dbname": os.getenv("DATABASE_NAME", "QA-results"),
+#     "user": os.getenv("DATABASE_USER", "postgres"),
+#     "password": os.getenv("DATABASE_PASSWORD", "pohde24"),
+#     "host": os.getenv("DATABASE_HOST", "postgres-db"),  # TÄRKEÄ MUUTOS! Ennen "localhost"
+#     "port": os.getenv("DATABASE_PORT", "5432"),  # Käyttää kontin sisäistä porttia
+# }
 
 
 # 🔹 Luo tietokantayhteys ja varmista, että taulu on olemassa

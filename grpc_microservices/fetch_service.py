@@ -5,8 +5,8 @@ import fetch_service_pb2_grpc
 import requests
 import os
 
-# ORTHANC_URL = os.getenv("ORTHANC_URL", "http://localhost:8042")
-ORTHANC_URL = os.getenv("ORTHANC_URL", "http://host.docker.internal:8042")
+ORTHANC_URL = os.getenv("ORTHANC_URL", "http://localhost:8042")
+#ORTHANC_URL = os.getenv("ORTHANC_URL", "http://host.docker.internal:8042")
 
 
 class FetchService(fetch_service_pb2_grpc.FetchServiceServicer):

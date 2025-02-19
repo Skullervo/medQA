@@ -2,7 +2,7 @@ grpc_microservices/analyze_service.tar
 *.tar
 
 # Python virtual env
-#server/venvUS/
+venv/
 
 # Compiled Python caches
 __pycache__/
