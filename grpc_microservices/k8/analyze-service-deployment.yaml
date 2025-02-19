@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analyze-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: analyze-service
+  template:
+    metadata:
+      labels:
+        app: analyze-service
+    spec:
+      containers:
+      - name: analyze-service
+        image: analyze-service:latest   # Käytetään paikallista kuvaa
+        imagePullPolicy: Never          # ⚠️ Estetään kuvan lataus Docker Hubista
+        ports:
+        - containerPort: 50052

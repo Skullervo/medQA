@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analyze-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analyze-service
+  template:
+    metadata:
+      labels:
+        app: analyze-service
+    spec:
+      containers:
+        - name: analyze-service
+          image: analyze-service:latest
+          ports:
+            - containerPort: 50052
+          env:
+            - name: DATABASE_HOST
+              value: "postgres-db"
+            - name: FETCH_SERVICE_ADDRESS
+              value: "fetch-service:50051"
