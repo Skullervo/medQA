@@ -1,9 +1,10 @@
 from django.db import models
 
 class Ultrasound(models.Model):
-    s_depth = models.FloatField()  # Liukuluku
-    u_cov = models.FloatField()  # Liukuluku
-    u_skew = models.FloatField()  # Liukuluku
+    s_depth = models.FloatField() 
+    u_cov = models.FloatField()  
+    u_skew = models.FloatField()  
+    u_low = models.FloatField()
     stationname = models.CharField(max_length=255)  # Lisää tämä kenttä, jos se ei ole vielä olemassa
     institutionname = models.CharField(max_length=255)  # Lisää oletusarvo
     institutionaldepartmentname = models.CharField(max_length=255)  # Lisää tämä rivi, jos sitä ei ole
@@ -11,6 +12,7 @@ class Ultrasound(models.Model):
     modality = models.CharField(max_length=255) 
     instance = models.CharField(max_length=255)  # Käytä tätä kenttää instanssin ID:lle
     seriesdate = models.DateField()  # Käytä tätä kenttää sarjan päivämäärälle
+    serie = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'ultrasound'  # Käytä olemassa olevan taulun nimeä
