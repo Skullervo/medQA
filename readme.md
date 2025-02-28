@@ -82,6 +82,7 @@ docker run -d --name postgres -p 5432:5432 \
 
 | **Service**         | **Port**  | **Function** |
 |--------------------|---------|------------|
+| **Orthanc**    | `8082`  | Stores DICOM images |
 | **fetch_service**  | `50051` | Retrieves DICOM images from Orthanc |
 | **analyze_service** | `50052` | Analyzes images and stores results in the database |
 | **PostgreSQL**    | `5432`  | Stores analysis results |
