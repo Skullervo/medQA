@@ -1,16 +1,20 @@
+"""
+TEST CODE FOR FETCH SERVICE --> Fetch test serie from Orthanc and lists serie instances 
+"""
+
+
 import grpc
 import fetch_service_pb2
 import fetch_service_pb2_grpc
 import requests
 
-# Orthancin osoite
+# Orthanc address
 ORTHANC_URL = "http://localhost:8042"
 FETCH_SERVICE_ADDRESS = "localhost:50051"
 
-# 🔹 KORVAA TÄMÄ OIKEALLA `series_id`:llä
+# Test serie
 SERIES_ID = "c7d9fd60-b23d3c7c-d12a4c99-d256e73f-148d9b44"
 
-# 🔄 Yhdistetään Fetch Serviceen ja lisätään maksimi viestikoko (200MB)
 def get_fetch_stub():
     options = [
         ("grpc.max_send_message_length", 200 * 1024 * 1024),
@@ -20,7 +24,6 @@ def get_fetch_stub():
     return fetch_service_pb2_grpc.FetchServiceStub(channel)
 
 
-# 🔍 Haetaan ensimmäinen `instance_id` tietystä `series_id`:stä
 def get_first_instance_id(series_id):
     response = requests.get(f"{ORTHANC_URL}/series/{series_id}/instances")
     
@@ -38,7 +41,6 @@ def get_first_instance_id(series_id):
     return instance_id
 
 
-# 🔍 Haetaan DICOM-data Fetch-palvelulta
 def fetch_dicom_data(instance_id):
     stub = get_fetch_stub()
     
@@ -61,7 +63,6 @@ def fetch_dicom_data(instance_id):
         return False
 
 
-# 🔥 Suoritetaan testaus
 def main():
     instance_id = get_first_instance_id(SERIES_ID)
     
