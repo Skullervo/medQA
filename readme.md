@@ -29,7 +29,7 @@ This project consists of **gRPC-based microservices** that analyze **DICOM image
 
 ## 🔥 Architecture
 ```
-[fetch_service]  →  [analyze_service]  →  [PostgreSQL]
+[Orthanc]  →  [fetch_service]  →  [analyze_service]  →  [PostgreSQL]
 ```
 - **fetch_service** retrieves images from **Orthanc**.
 - **analyze_service** processes the images and stores the results in the database.
