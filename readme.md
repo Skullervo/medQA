@@ -1,5 +1,14 @@
 # 🌌 CSC DICOM Image Analysis with gRPC 🏥
 
+![Kubernetes](https://img.shields.io/badge/kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
+![Helm](https://img.shields.io/badge/helm-0F1689?style=for-the-badge&logo=helm&logoColor=white)
+![Istio](https://img.shields.io/badge/istio-466BB0?style=for-the-badge&logo=istio&logoColor=white)
+![Traefik](https://img.shields.io/badge/traefikproxy-24A1C7?style=for-the-badge&logo=traefikproxy&logoColor=white)
+![Prometheus](https://img.shields.io/badge/prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
+![Grafana](https://img.shields.io/badge/grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/postgres-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+
+
 This project consists of **gRPC-based microservices** that analyze **DICOM images**. The architecture is composed of three main services:
 
 - 🏷 **fetch_service** – Retrieves DICOM images from the **Orthanc server**.
