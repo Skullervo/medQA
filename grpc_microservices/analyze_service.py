@@ -13,16 +13,13 @@ from US_IQ_analysis3 import imageQualityUS
 import os
 import requests
 
-# 🔹 Orthanc ja Fetch Service osoitteet
+# Orthanc ja Fetch Service adressess
 ORTHANC_URL = os.getenv("ORTHANC_URL", "http://localhost:8042")
-#ORTHANC_URL = os.getenv("ORTHANC_URL", "http://host.docker.internal:8042")
 
 FETCH_SERVICE_ADDRESS = "localhost:50051"
-# 🔹 Fetch Service osoite (ennen localhost, nyt käytetään kontin nimeä)
-#FETCH_SERVICE_ADDRESS = os.getenv("FETCH_SERVICE_HOST", "fetch-service:50051")  
 
 
-# 🔹 Tietokanta-asetukset
+# Database settings
 DB_CONFIG = {
     "dbname": os.getenv("DATABASE_NAME", "QA-results"),
     "user": os.getenv("DATABASE_USER", "postgres"),
@@ -31,16 +28,7 @@ DB_CONFIG = {
     "port": os.getenv("DATABASE_PORT", "5432"),
 }
 
-# DB_CONFIG = {
-#     "dbname": os.getenv("DATABASE_NAME", "QA-results"),
-#     "user": os.getenv("DATABASE_USER", "postgres"),
-#     "password": os.getenv("DATABASE_PASSWORD", "pohde24"),
-#     "host": os.getenv("DATABASE_HOST", "postgres-db"),  # TÄRKEÄ MUUTOS! Ennen "localhost"
-#     "port": os.getenv("DATABASE_PORT", "5432"),  # Käyttää kontin sisäistä porttia
-# }
-
-
-# 🔹 Luo tietokantayhteys ja varmista, että taulu on olemassa
+# Create DB connection and check that table is created
 def connect_db():
     conn = psycopg2.connect(**DB_CONFIG)
     cur = conn.cursor()
@@ -65,7 +53,7 @@ def connect_db():
     cur.close()
     return conn
 
-# 🔹 Yhdistetään Fetch Serviceen
+# Connect to fetch_service
 def get_fetch_stub():
     options = [
         ("grpc.max_send_message_length", 200 * 1024 * 1024),
@@ -78,7 +66,7 @@ class AnalyzeService(analyze_service_pb2_grpc.AnalyzeServiceServicer):
     def AnalyzeAllDicomData(self, request, context):
         print("📡 Received request to analyze all series in Orthanc")
 
-        # 🔍 Haetaan kaikki sarjat Orthancista
+        # Series from Orthanc
         response = requests.get(f"{ORTHANC_URL}/series")
         if response.status_code != 200:
             print("❌ Error: Could not fetch series from Orthanc")
@@ -98,29 +86,29 @@ class AnalyzeService(analyze_service_pb2_grpc.AnalyzeServiceServicer):
         for series_id in series_list:
             print(f"📡 Processing series ID: {series_id}")
 
-            # 🔍 Haetaan sarjan instanssit Orthancista
+            # Instances from Orthanc
             instance_response = requests.get(f"{ORTHANC_URL}/series/{series_id}/instances")
             if instance_response.status_code != 200:
                 print(f"❌ Could not fetch instances for series {series_id}")
-                continue  # Ohitetaan tämä sarja
+                continue  # skip
 
             instance_list = instance_response.json()
             if not instance_list:
                 print(f"❌ No instances found for series {series_id}")
-                continue  # Ohitetaan tämä sarja
+                continue  # skip
 
             for instance in instance_list:
                 instance_id = instance["ID"]
                 print(f"📡 Fetching instance ID: {instance_id}")
 
-                # 🔍 Haetaan DICOM-data Fetch-palvelulta
+                # DICOM-data with Fetch-service
                 fetch_response = fetch_stub.FetchDicomData(fetch_service_pb2.FetchRequest(instance_id=instance_id))
 
                 if not fetch_response.dicom_data:
                     print(f"❌ No data received for instance {instance_id}")
-                    continue  # Ohitetaan tämä instanssi
+                    continue  # skip
 
-                # 🔄 Muutetaan binääridata DICOM-muotoon
+                # Monify binary data to DICOM format
                 dicom_bytes = io.BytesIO(fetch_response.dicom_data)
                 try:
                     dicom_dataset = pydicom.dcmread(dicom_bytes, force=True)
@@ -129,7 +117,7 @@ class AnalyzeService(analyze_service_pb2_grpc.AnalyzeServiceServicer):
                     print(f"❌ Error reading DICOM file: {e}")
                     continue  # Ohitetaan tämä instanssi
 
-                # 🔍 Haetaan metadata
+                # Metadata
                 metadata = {
                     "InstitutionName": dicom_dataset.get("InstitutionName", "Unknown"),
                     "InstitutionalDepartmentName": dicom_dataset.get("InstitutionalDepartmentName", "Unknown"),
@@ -141,21 +129,21 @@ class AnalyzeService(analyze_service_pb2_grpc.AnalyzeServiceServicer):
 
                 if metadata["Modality"] != "US":
                     print("❌ Not an ultrasound image. Skipping...")
-                    continue  # Ohitetaan tämä instanssi
+                    continue  # skip
 
-                # 📊 Analysoidaan kuva
+                # Analyse image
                 image_array = dicom_dataset.pixel_array
                 analysis = imageQualityUS(dicom_dataset, dicom_bytes, image_array, "probe-LUT.xls")
                 result = analysis.MAIN_US_analysis()
 
-                # 🔹 Muunnetaan tulokset JSON-muotoon
+                # Modify results to JSON
                 json_result = {
                     key: float(value) if isinstance(value, np.float64)
                     else value.tolist() if isinstance(value, np.ndarray)
                     else value for key, value in result.items()
                 }
 
-                # 📂 Tallennetaan analyysitulokset tietokantaan
+                # Save results to DB
                 cur.execute("""
                     INSERT INTO ultrasound (
                         institutionname, institutionaldepartmentname, manufacturer, modality, 
