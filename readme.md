@@ -23,7 +23,10 @@ This project consists of **gRPC-based microservices** that analyze **DICOM image
 - ✅ **gRPC** – Efficient and fast communication between microservices  
 - ✅ **Docker & Docker Hub** – Container management and deployment  
 - ✅ **PostgreSQL** – Database for storing analysis results  
-- ✅ **Python & pydicom** – DICOM image processing  
+- ✅ **Python & pydicom** – DICOM image processing
+- :x: **Kubernetes** – In progress
+- :x: **Prometheus** – In progress
+- :x: **Grafana** – In progress
 
 ---
 
