@@ -13,9 +13,9 @@ from US_IQ_analysis3 import imageQualityUS
 import os
 import requests
 
+#TODO ------> save all env variables from code to own file
 # Orthanc ja Fetch Service adressess
 ORTHANC_URL = os.getenv("ORTHANC_URL", "http://localhost:8042")
-
 FETCH_SERVICE_ADDRESS = "localhost:50051"
 
 
