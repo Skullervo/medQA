@@ -1,4 +1,4 @@
-# 🌌 CSC DICOM Image Analysis with gRPC 🏥
+# 🌌 DICOM Image Analysis with gRPC 🏥
 
 ![Python](https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![gRPC](https://img.shields.io/badge/gRPC-4285F4?style=for-the-badge&logo=grpc&logoColor=white)
