@@ -61,22 +61,59 @@ docker run -d --name fetch_service -p 50051:50051 skullervo/fetch_service:worker
 
 #### Start `analyze_service`:
 ```sh
-docker run -d --name analyze_service -p 50052:50052 \
+sudo docker run -d --name analyze_service -p 50052:50052 \
     -e FETCH_SERVICE_URL="worker-node1-ip:50051" \
     -e POSTGRES_HOST="master-node-ip" \
     -e POSTGRES_USER="<your_username>" \
     -e POSTGRES_PASSWORD="<your_psw>" \
     -e POSTGRES_DB="QA-results" \
-    skullervo/analyze_service:worker2v2
+    skullervo/analyze_service:latest
 ```
 
 #### Start `PostgreSQL`:
 ```sh
-docker run -d --name postgres -p 5432:5432 \
-    -e POSTGRES_USER=postgres \
-    -e POSTGRES_PASSWORD=pohde24 \
+sudo docker run -d --name postgres -p 5432:5432 \
+    -e POSTGRES_USER=<your_username> \
+    -e POSTGRES_PASSWORD=<your_psw> \
     -e POSTGRES_DB=QA-results \
-    skullervo/postgres:master1
+    skullervo/postgres:latest
+```
+
+#### Start `Prometheus`:
+```sh
+sudo docker run -d --name=prometheus -p 9090:9090 prom/prometheus
+```
+
+#### `Prometheus` yaml configuration:
+```sh
+global:
+  scrape_interval: 15s  # Kuinka usein dataa kerätään
+
+scrape_configs:
+  - job_name: 'master-node'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'worker-node1'
+    static_configs:
+      - targets: ['192.168.1.234:9090']  # Korvaa oikealla IP-osoitteella
+
+  - job_name: 'worker-node2'
+    static_configs:
+      - targets: ['192.168.1.245:9090']  # Korvaa oikealla IP-osoitteella
+
+  - job_name: 'analyze_service'
+    static_configs:
+      - targets: ['192.168.1.245:50053']  # Worker-node2:n IP ja oikea portti
+
+  - job_name: 'fetch_service'
+    static_configs:
+      - targets: ['192.168.1.234:50054']  # Korvaa oikealla Worker-node1:n IP:llä
+```
+
+#### Start `Grafana`:
+```sh
+sudo docker run -d --name=grafana -p 3000:3000 grafana/grafana
 ```
 
 ---
