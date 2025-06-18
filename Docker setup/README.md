@@ -10,7 +10,7 @@ wsl --install -d Ubuntu
 wsl
 ```
 
-### 3. Start Docker Desktop
+### 3. Start Docker Desktop in PowerShell
 ```powershell
 Start-Process "Path_to_Docker_Desktop\Docker Desktop.exe"
 ```
