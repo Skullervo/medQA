@@ -4,7 +4,7 @@ This guide explains how to create Kubernetes Pods for project using images hoste
 
 ---
 
-## 1. ✅ Create a Deployment YAML file
+## 1. ✅ Create a Deployment YAML files
 
 Create a .yaml file for each microservice. Here's the general format:
 
