@@ -42,6 +42,35 @@ EXPOSE 50052
 CMD ["python", "analyze_service.py"]
 ```
 
+```Dockerfile
+FROM python:3.12-slim
+WORKDIR /app
+
+# 🔧 Asenna tarvittavat paketit
+RUN apt-get update && apt-get install -y protobuf-compiler
+
+# 🔧 Ympäristömuuttujat (voit yliajaa docker run -e ...)
+ENV ORTHANC_URL=http://localhost:8042
+ENV PORT=50051
+
+# 🔧 Asenna Python-riippuvuudet
+COPY ../requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 🔧 Kopioi palvelun koodi
+COPY fetch_service.py fetch_service.proto .
+
+# 🔧 Generoi gRPC-koodi
+RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. fetch_service.proto
+
+# 🔧 Dokumentoi portti
+EXPOSE 50051
+
+# 🔧 Käynnistä palvelu
+CMD ["python", "fetch_service.py"]
+
+```
+
 **Run the container:**
 ```bash
 docker run -d --name analyze-service-container analyze-service:distributedQA
