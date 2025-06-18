@@ -35,7 +35,7 @@ COPY analyze_service.py analyze_service.proto test_analyze_service.py fetch_serv
 # Generate gRPC code
 RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. analyze_service.proto fetch_service.proto
 
-# Expose gRPC port
+# Expose gRPC port (check if is it free)
 EXPOSE 50052
 
 # Start service
