@@ -133,7 +133,7 @@ docker run -d `
 
 ---
 
-## 🛠️ 3. Interact With a Running Container
+## 🛠️ 2. Interact With a Running Container
 
 **Access a container shell:**
 ```PowerShell
@@ -147,7 +147,7 @@ docker run -it -v "$(pwd):/app" my-app
 
 ---
 
-## 💾 5. Save or Share an Image (Optional)
+## 💾 3. Save or Share an Image (Optional)
 
 **Export to `.tar`:**
 ```PowerShell
