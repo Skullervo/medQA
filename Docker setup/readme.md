@@ -1,6 +1,6 @@
 # 🐳 Docker Guide Overview
 
-This directory contains **subfolders**, each providing Docker instructions for a specific topic shown in the previous diagram. The goal is to help developers understand and apply Docker in modular steps across different services and use cases.
+This directory contains **subfolders**, each providing Docker instructions for a specific topic shown in the previous diagram. The goal is to help user of this project to understand and apply Docker in modular steps across different services and use cases.
 
 Each subfolder includes:
 - A relevant `Dockerfile`
