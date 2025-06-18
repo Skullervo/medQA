@@ -35,7 +35,7 @@ spec:
               value: "http://orthanc-service:8042"
 ```
 
-🧩 analyze-deployment.yaml
+### 🧩 analyze-deployment.yaml
 
 ```yaml
 apiVersion: apps/v1
@@ -72,7 +72,7 @@ spec:
               value: "yourpassword"
 ```
 
-🧩 postgres-deployment.yaml
+### 🧩 postgres-deployment.yaml
 
 ```yaml
 apiVersion: apps/v1
@@ -104,7 +104,7 @@ spec:
 ```
 
 
-2. 🚀 Apply the Deployments
+## 2. 🚀 Apply the Deployments
 Run these commands to deploy your pods to Minikube:
 
 ```bash
@@ -113,14 +113,14 @@ kubectl apply -f analyze-deployment.yaml
 kubectl apply -f postgres-deployment.yaml
 ```
 
-3. 🧪 Check Pod Status
+## 3. 🧪 Check Pod Status
 ```bash
 kubectl get pods
 ```
 
 If all pods are STATUS: Running, everything is working!
 
-4. 🛠️ Troubleshooting
+## 4. 🛠️ Troubleshooting
 Use this to inspect failing pods:
 
 ```bash
