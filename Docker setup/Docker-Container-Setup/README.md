@@ -54,7 +54,17 @@ docker images
 
 **Run the container:**
 ```bash
-docker run -d --name analyze-service-container analyze-service:distributedQA
+docker run -d `
+  --name analyze-service-container `
+  -p 50052:50052 `
+  -e ORTHANC_URL=http://host.docker.internal:8042 `
+  -e DATABASE_HOST=host.docker.internal `
+  -e DATABASE_PORT=55432 `
+  -e DATABASE_NAME=QA-results `
+  -e DATABASE_USER=postgres `
+  -e DATABASE_PASSWORD=pohde24 `
+  -e FETCH_SERVICE_HOST=host.docker.internal:50051 `
+  analyze-service:distributedQA
 ```
 
 ---
@@ -99,7 +109,11 @@ docker images
 
 **Run the container:**
 ```bash
-docker run -d --name fetch-service-container fetch-service:distributedQA
+docker run -d `
+  --name fetch-service-container `
+  -p 50051:50051 `
+  -e ORTHANC_URL=http://host.docker.internal:8042 `
+  fetch-service:distributedQA .
 ```
 
 ---
@@ -109,34 +123,17 @@ docker run -d --name fetch-service-container fetch-service:distributedQA
 **Run PostgreSQL directly from Docker Hub:**
 ```bash
 docker run -d `
-  --name postgres-db-distributedQA `
-  -e POSTGRES_USER=admin `
-  -e POSTGRES_PASSWORD=salasana `
-  -e POSTGRES_DB=tietokannannimi `
-  -p 55432:5432 `
-  postgres:16
+     --name postgres-db-distributedQA `
+     -e POSTGRES_USER=postgres `
+     -e POSTGRES_PASSWORD=pohde24 `
+     -e POSTGRES_DB=QA-results `
+     -p 55432:5432 `
+     postgres:16
 ```
 
 ---
 
-## ⚙️ 2. Build the Container Images
-
-```bash
-docker build -f Dockerfile.analyze -t analyze-service:distributedQA .
-docker build -f Dockerfile.fetch -t fetch-service:distributedQA .
-```
-
----
-
-## 🔍 3. Verify Images
-
-```bash
-docker images
-```
-
----
-
-## 🛠️ 4. Interact With a Running Container
+## 🛠️ 3. Interact With a Running Container
 
 **Access a container shell:**
 ```bash
@@ -166,12 +163,3 @@ docker push username/my-app:latest
 
 ---
 
-## ✅ Summary: Workflow
-
-| Step                   | Command Example                              |
-|------------------------|----------------------------------------------|
-| 1. Create Dockerfile   | (edit Dockerfile)                             |
-| 2. Build image         | `docker build -t name .`                      |
-| 3. Run container       | `docker run -it name`                         |
-| 4. Develop or access   | `docker exec -it` / `docker run -v "$(pwd):/app"` |
-| 5. Share or push       | `docker push`                                 |
