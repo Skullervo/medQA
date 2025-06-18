@@ -1,6 +1,6 @@
 # 🐳 Kubernetes Deployment Instructions for Docker Hub Images
 
-This guide explains how to create Kubernetes Pods using images hosted on Docker Hub. The structure assumes you have pushed your images to Docker Hub and Minikube is running.
+This guide explains how to create Kubernetes Pods for project using images hosted on Docker Hub. The structure assumes you have pushed your images to Docker Hub and Minikube is running.
 
 ---
 
