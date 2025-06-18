@@ -42,46 +42,15 @@ EXPOSE 50052
 CMD ["python", "analyze_service.py"]
 ```
 
-```Dockerfile
-FROM python:3.12-slim
-WORKDIR /app
-
-# Asenna tarvittavat paketit (esim. pydicom + gRPC + Excel + psycopg2 + OpenCV)
-RUN apt-get update && apt-get install -y \
-    libgl1 \
-    libglib2.0-0 \
-    protobuf-compiler \
-    gcc \
-    libpq-dev \
-    python3-dev
-
-# 🔧 Ympäristömuuttujat (oletukset – voidaan yliajaa docker run -e ...)
-ENV ORTHANC_URL=http://localhost:8042
-ENV FETCH_SERVICE_ADDRESS=fetch-service:50051
-ENV DATABASE_NAME=QA-results
-ENV DATABASE_USER=postgres
-ENV DATABASE_PASSWORD=securepassword
-ENV DATABASE_HOST=postgres-db
-ENV DATABASE_PORT=5432
-
-# Kopioi requirements ja asenna riippuvuudet
-COPY ../requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Kopioi koodit ja datatiedostot
-COPY analyze_service.py analyze_service.proto test_analyze_service.py fetch_service.proto US_IQ_analysis3.py LUT_table_codes.py LUT_taulukko_lisaa.py probe-LUT.xls .
-
-# Generoi gRPC Python -tiedostot
-RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. analyze_service.proto fetch_service.proto
-
-# Portti ulospäin
-EXPOSE 50052
-
-# Käynnistä palvelu
-CMD ["python", "analyze_service.py"]
-
+**Generate the Docker image:**
+```bash
+docker build -f Dockerfile.analyze -t analyze-service:distributedQA .
 ```
 
+**Check if image is generated:**
+```bash
+docker images
+```
 
 **Run the container:**
 ```bash
@@ -118,33 +87,14 @@ CMD ["python", "fetch_service.py"]
 
 ```
 
-```Dockerfile
-FROM python:3.12-slim
-WORKDIR /app
+**Generate the Docker image:**
+```bash
+docker build -f Dockerfile.fetch -t fetch-service:distributedQA .
+```
 
-# 🔧 Asenna tarvittavat paketit
-RUN apt-get update && apt-get install -y protobuf-compiler
-
-# 🔧 Ympäristömuuttujat (voit yliajaa docker run -e ...)
-ENV ORTHANC_URL=http://localhost:8042
-ENV PORT=50051
-
-# 🔧 Asenna Python-riippuvuudet
-COPY ../requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# 🔧 Kopioi palvelun koodi
-COPY fetch_service.py fetch_service.proto .
-
-# 🔧 Generoi gRPC-koodi
-RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. fetch_service.proto
-
-# 🔧 Dokumentoi portti
-EXPOSE 50051
-
-# 🔧 Käynnistä palvelu
-CMD ["python", "fetch_service.py"]
-
+**Check if image is generated:**
+```bash
+docker images
 ```
 
 **Run the container:**
@@ -158,12 +108,12 @@ docker run -d --name fetch-service-container fetch-service:distributedQA
 
 **Run PostgreSQL directly from Docker Hub:**
 ```bash
-docker run -d \
-  --name postgres-db-distributedQA \
-  -e POSTGRES_USER=admin \
-  -e POSTGRES_PASSWORD=salasana123 \
-  -e POSTGRES_DB=analyysitietokanta \
-  -p 55432:5432 \
+docker run -d `
+  --name postgres-db-distributedQA `
+  -e POSTGRES_USER=admin `
+  -e POSTGRES_PASSWORD=salasana `
+  -e POSTGRES_DB=tietokannannimi `
+  -p 55432:5432 `
   postgres:16
 ```
 
