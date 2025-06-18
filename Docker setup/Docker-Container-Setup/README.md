@@ -69,8 +69,12 @@ COPY fetch_service.py fetch_service.proto .
 # Generate gRPC code
 RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. fetch_service.proto
 
-# Start service
+# 🔹 Optional but recommended: expose the gRPC port
+EXPOSE 50051
+
+# Start the service
 CMD ["python", "fetch_service.py"]
+
 ```
 
 **Run the container:**
