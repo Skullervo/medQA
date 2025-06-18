@@ -43,17 +43,17 @@ CMD ["python", "analyze_service.py"]
 ```
 
 **Generate the Docker image:**
-```bash
+```PowerShell
 docker build -f Dockerfile.analyze -t analyze-service:distributedQA .
 ```
 
 **Check if image is generated:**
-```bash
+```PowerShell
 docker images
 ```
 
 **Run the container:**
-```bash
+```PowerShell
 docker run -d `
   --name analyze-service-container `
   -p 50052:50052 `
@@ -72,7 +72,7 @@ docker run -d `
 ### 📥 FETCH MICROSERVICE
 
 **Dockerfile: `Dockerfile.fetch`**
-```Dockerfile
+```PowerShell
 FROM python:3.12-slim
 WORKDIR /app
 
@@ -98,17 +98,17 @@ CMD ["python", "fetch_service.py"]
 ```
 
 **Generate the Docker image:**
-```bash
+```PowerShell
 docker build -f Dockerfile.fetch -t fetch-service:distributedQA .
 ```
 
 **Check if image is generated:**
-```bash
+```PowerShell
 docker images
 ```
 
 **Run the container:**
-```bash
+```PowerShell
 docker run -d `
   --name fetch-service-container `
   -p 50051:50051 `
@@ -121,7 +121,7 @@ docker run -d `
 ### 🗄️ POSTGRES MICROSERVICE
 
 **Run PostgreSQL directly from Docker Hub:**
-```bash
+```PowerShell
 docker run -d `
      --name postgres-db-distributedQA `
      -e POSTGRES_USER=postgres `
@@ -136,12 +136,12 @@ docker run -d `
 ## 🛠️ 3. Interact With a Running Container
 
 **Access a container shell:**
-```bash
+```PowerShell
 docker exec -it <container_name_or_ID> bash
 ```
 
 **Mount local code (for development):**
-```bash
+```PowerShell
 docker run -it -v "$(pwd):/app" my-app
 ```
 
@@ -150,12 +150,12 @@ docker run -it -v "$(pwd):/app" my-app
 ## 💾 5. Save or Share an Image (Optional)
 
 **Export to `.tar`:**
-```bash
+```PowerShell
 docker save my-app > my-app.tar
 ```
 
 **Push to Docker Hub:**
-```bash
+```PowerShell
 docker login
 docker tag my-app username/my-app:latest
 docker push username/my-app:latest
