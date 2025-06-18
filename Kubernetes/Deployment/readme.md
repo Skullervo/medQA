@@ -127,3 +127,15 @@ Use this to inspect failing pods:
 kubectl describe pod <pod-name>
 kubectl logs <pod-name>
 ```
+
+## 5. Login into analyze_service pod and run test analysis
+
+```bash
+kubectl exec -it <pod_name> -- /bin/bash
+```
+
+example:
+
+```bash
+kubectl exec -it analyze-service-bf4b87849-f9wl9 -- /bin/bash
+```
