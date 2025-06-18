@@ -1,52 +1,52 @@
+# 🐳 INSTRUCTIONS: Uploading a Docker Image to Docker Hub
 
-# 🐳 OHJE: Docker-imagen lisääminen Docker Hubiin
-
-## 1. Kirjaudu sisään Docker Hubiin (https://hub.docker.com)
+## 1. Log in to Docker Hub (https://hub.docker.com)
 ```PowerShell
 docker login
 ```
 
-## 2. Nimeä olemassa oleva paikallinen Docker-image uudelleen Docker Hub -muotoon:
+## 2. Rename an existing local Docker image to match the Docker Hub format:
 ```PowerShell
-docker tag <paikallinen-imagen-nimi> <dockerhub-käyttäjänimi>/<haluttu-imagen-nimi>:<versio>
+docker tag <local-image-name> <dockerhub-username>/<desired-image-name>:<version>
 ```
 
-**ESIMERKKI:**
+**EXAMPLE:**
 ```PowerShell
 docker tag my-local-image myusername/my-image:latest
 ```
 
-## 3. Lähetä (pushaa) image Docker Hub -tilillesi:
+## 3. Push the image to your Docker Hub account:
 ```PowerShell
-# docker push <dockerhub-käyttäjänimi>/<imagen-nimi>:<versio>
+# docker push <dockerhub-username>/<image-name>:<version>
 ```
 
-**ESIMERKKI:**
+**EXAMPLE:**
 ```PowerShell
 docker push myusername/my-image:latest
-````
-
-## 4. Tarkista selaimessa että image on ilmestynyt tilillesi:
-https://hub.docker.com/repositories
-
-### 📥 Jos haluat ladata imagen toiselle koneelle:
-
-```PowerShell
-# docker pull <dockerhub-käyttäjänimi>/<imagen-nimi>:<versio>
 ```
 
-**ESIMERKKI:**
+## 4. Check in your browser that the image has appeared in your repository:
+https://hub.docker.com/repositories
+
+### 📥 If you want to download the image on another machine:
+
+```PowerShell
+# docker pull <dockerhub-username>/<image-name>:<version>
+```
+
+**EXAMPLE:**
 ```PowerShell
 docker pull myusername/my-image:latest
 ```
 
-## 🏁 Voit ajaa imagen suoraan näin:
+## 🏁 You can run the image directly like this:
 
 ```PowerShell
-# docker run -d --name <kontin-nimi> -p <host-portti>:<kontti-portti> <dockerhub-käyttäjänimi>/<imagen-nimi>:<versio>
+# docker run -d --name <container-name> -p <host-port>:<container-port> <dockerhub-username>/<image-name>:<version>
 ```
 
-**ESIMERKKI:**
+**EXAMPLE:**
 ```PowerShell
 docker run -d --name my-container -p 8080:80 myusername/my-image:latest
 ```
+
